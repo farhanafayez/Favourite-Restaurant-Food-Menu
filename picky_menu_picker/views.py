@@ -36,34 +36,16 @@ def home(request):
     # return render(request, "base.html", {html_var:True, 'num':num})
     return render(request, "home.html", context)
 
-def home2(request):
-    num = 0
-    some_list = [
-        random.randint(0,10000000),
-        random.randint(0,10000000),
-        random.randint(0,10000000)
-    ]
-    condition_bool_item = False
-    if condition_bool_item:
-        num = random.randint(0,10000000)
-    context = {'num': num,
-               'some_list': some_list
+def about(request):
+  
+    context = {
     }
     # return render(request, "base.html", {html_var:True, 'num':num})
-    return render(request, "home2.html", context)
+    return render(request, "about.html", context)
 
-def home3(request):
-    num = 0
-    some_list = [
-        random.randint(0,10000000),
-        random.randint(0,10000000),
-        random.randint(0,10000000)
-    ]
-    condition_bool_item = False
-    if condition_bool_item:
-        num = random.randint(0,10000000)
-    context = {'num': num,
-               'some_list': some_list
+def contact(request):
+    
+    context = {
     }
     # return render(request, "base.html", {html_var:True, 'num':num})
-    return render(request, "home3.html", context)
+    return render(request, "contact.html", context)
