@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.views import View 
+from django.views.generic import TemplateView
+
 import random
 
 # Create your views here.
@@ -49,3 +52,45 @@ def contact(request):
     }
     # return render(request, "base.html", {html_var:True, 'num':num})
     return render(request, "contact.html", context)
+
+
+# class ContactView(View):
+#     def get(self, request, *args, **kwargs):
+#         context = {}
+   
+#         return render(request, "contact.html", context)
+
+    # def put(self, request, *args, **kwargs):
+    #     context = {}
+   
+    #     return render(request, "contact.html", context)
+
+    # def post(self, request, *args, **kwargs):
+    #     context = {}
+   
+    #     return render(request, "contact.html", context)
+
+class ContactView(TemplateView):
+   
+    template_name = "contact.html"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
