@@ -1,32 +1,33 @@
-<!DOCTYPE html>
 {% extends "base.html" %}
-{% block content %}
-<html lang="en">
-<head>
-</head>
-<body>
 
-<h>
-    HELLO
-</h>
+{% block head_title %}Welcome || {{ block.super }}{% endblock head_title %}
+{% block content %}
+
+
+<h1>HELLO!</h1>
+<h1>{{ block.super }}</h1>
 <p>
-    this is {{ html_var }} coming through
+    this is <code> {% verbatim %}{{ html_var }}{% endverbatim %} </code> coming through
 </p>
 
 <p>
-{{ % if  html_var  % }} coming through
-random num is  {{ num }}
+{ % if num is not None  % } 
+Random num is  {{ num }}
 { % endif % }}
 </p>
-{ % for some_item in some_list % }
- {% if some_item|divisibleby:"2" %}
-     even number
- {% endif  %}
- {{ some_item }}
-{% endfor %}
-<p>
 
+<p>
+{% for some_item in some_list %}
+    {% if some_item|divisibleby:"2" %}
+            Even number
+    {% endif  %}
+    {{ some_item }} </br>
+    
+{% endfor %}
 </p>
-</body>
-</html>
+
+<p>
+ some item is {{ some_item }}
+</p>
+
 {% endblock content %}
