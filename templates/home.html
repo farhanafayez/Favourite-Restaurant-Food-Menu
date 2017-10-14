@@ -11,9 +11,9 @@
 </p>
 
 <p>
-{ % if num is not None  % } 
-Random num is  {{ num }}
-{ % endif % }}
+{% if num is not None  %} 
+    Random num is  {{ num }}
+{% endif %}
 </p>
 
 <p>
@@ -22,7 +22,7 @@ Random num is  {{ num }}
             Even number
     {% endif  %}
     {{ some_item }} </br>
-    
+
 {% endfor %}
 </p>
 
