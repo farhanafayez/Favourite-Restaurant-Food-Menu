@@ -15,12 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from picky_menu_picker.views import ContactView,
+from picky_menu_picker.views import ContactView, HomeView, AboutView
+from django.views.generic import TemplateView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', home),
-    url(r'^about', about),
+    url(r'^$', HomeView.as_view()),
+    url(r'^about', AboutView.as_view()),
     url(r'^contact()', ContactView.as_view()),
     # url(r'^contact()', ContactTemplateView.as_view()),
 
