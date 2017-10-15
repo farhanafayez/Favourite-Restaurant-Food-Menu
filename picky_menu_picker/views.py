@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import View 
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 
 from .models import RestaurantLocation
 
@@ -14,8 +14,25 @@ def restaurant_listview(request):
     return render(request, template_name, context)
 
 
+class RestaurantListView(ListView):
+    queryset = RestaurantLocation.objects.all()
+    template_name = 'picky_menu_picker/restaurants_list.html'
 
+class SearchRestaurantListView(ListView):
+    
+    template_name = 'picky_menu_picker/restaurants_list.html'
 
+    def get_queryset(self):
+        slug = self.kwargs.get("")
+        if slug:
+            queryset = RestaurantLocation.objects.filter(
+                    Q(category__iexact=slug) |
+                    Q(category__icontains=slug) 
+                )
+        else:
+            queryset = RestaurantLocation.objects.none()
+
+        return queryset
 
 
 
@@ -47,6 +64,23 @@ def restaurant_listview(request):
 
 
 # ___Deprecated code___
+
+
+# class ArabRestaurantListView(ListView):
+#     queryset = RestaurantLocation.objects.filter(category__iexact='Arab')
+#     template_name = 'picky_menu_picker/restaurants_list.html'
+
+
+# class WesternRestaurantListView(ListView):
+#     queryset = RestaurantLocation.objects.filter(category__iexact='Western')
+#     template_name = 'picky_menu_picker/restaurants_list.html'
+
+# class PortugueseRestaurantListView(ListView):
+#     queryset = RestaurantLocation.objects.filter(category__iexact='Portuguese')
+#     template_name = 'picky_menu_picker/restaurants_list.html'
+
+
+
 # import random
 
 # class HomeView(TemplateView):
