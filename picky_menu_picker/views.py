@@ -4,6 +4,7 @@ from django.views import View
 from django.views.generic import TemplateView, ListView
 
 from .models import RestaurantLocation
+from django.db.models import Q
 
 def restaurant_listview(request):
     template_name = 'picky_menu_picker/restaurants_list.html'
@@ -15,22 +16,17 @@ def restaurant_listview(request):
 
 
 class RestaurantListView(ListView):
-    queryset = RestaurantLocation.objects.all()
-    template_name = 'picky_menu_picker/restaurants_list.html'
-
-class SearchRestaurantListView(ListView):
-    
     template_name = 'picky_menu_picker/restaurants_list.html'
 
     def get_queryset(self):
-        slug = self.kwargs.get("")
+        slug = self.kwargs.get("slug")
         if slug:
             queryset = RestaurantLocation.objects.filter(
                     Q(category__iexact=slug) |
                     Q(category__icontains=slug) 
                 )
         else:
-            queryset = RestaurantLocation.objects.none()
+            queryset = RestaurantLocation.objects.all()
 
         return queryset
 
@@ -63,7 +59,26 @@ class SearchRestaurantListView(ListView):
 
 
 
+
+
+
 # ___Deprecated code___
+
+# class SearchRestaurantListView(ListView):
+    
+#     template_name = 'picky_menu_picker/restaurants_list.html'
+#     def get_queryset(self):
+#         slug = self.kwargs.get("")
+#         if slug:
+#             queryset = RestaurantLocation.objects.filter(
+#                     Q(category__iexact=slug) |
+#                     Q(category__icontains=slug) 
+#                 )
+#         else:
+#             queryset = RestaurantLocation.objects.none()
+
+#         return queryset
+
 
 
 # class ArabRestaurantListView(ListView):
