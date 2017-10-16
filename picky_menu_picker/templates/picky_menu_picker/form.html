@@ -1,0 +1,18 @@
+
+{% extends "base.html" %}
+
+{% block head_title %}Add Restaurants | {{ block.super}}{% endblock head_title %}
+
+{% block content %}
+<h1>Add Favourite Restaurants</h1>
+
+<form method= 'POST'> {% csrf_token %}
+
+    <input type = 'text' name='title' placeholder='Your title'>
+    <input type = 'text' name='Location' placeholder='Location'>
+    <input type = 'text' name='Category' placeholder='Category'>
+    <button type='submit'>Save</button>
+
+</form>
+
+{% endblock %}

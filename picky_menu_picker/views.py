@@ -1,10 +1,32 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View 
 from django.views.generic import TemplateView, ListView, DetailView
 
 from .models import RestaurantLocation
 from django.db.models import Q
+from .forms import RestaurantCreateForm
+
+def restaurant_createview(request):
+    if request.method == 'POST':
+
+        title = request.POST.get("title")
+        location = request.POST.get("location")
+        category = request.POST.get("category")
+        obj = RestaurantLocation.objects.create(
+                name = title,
+                location = location,
+                category = category,
+
+            )
+        return HttpResponseRedirect("/restaurants/")
+
+    template_name = 'picky_menu_picker/form.html'
+    queryset = RestaurantLocation.objects.all()
+    context = {
+        
+    }
+    return render(request, template_name, context)
 
 def restaurant_listview(request):
     template_name = 'picky_menu_picker/restaurants_list.html'
