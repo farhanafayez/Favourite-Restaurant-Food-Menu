@@ -5,14 +5,18 @@
 
 {% block content %}
 <h1>Add Favourite Restaurants</h1>
+{% if errors %}
 
+   {{ errors}}
+{% endif %}
 <form method= 'POST'> {% csrf_token %}
 
-    <input type = 'text' name='name' placeholder='Your name'>
+   <!--  <input type = 'text' name='name' placeholder='Your name'>
     <input type = 'text' name='Location' placeholder='Location'>
-    <input type = 'text' name='Category' placeholder='Category'>
+    <input type = 'text' name='Category' placeholder='Category'> -->
+    {{ form.as_p }}
     <button type='submit'>Save</button>
-
+    
 </form>
 
 {% endblock %}

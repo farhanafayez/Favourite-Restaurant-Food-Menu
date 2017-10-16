@@ -8,27 +8,30 @@ from django.db.models import Q
 from .forms import RestaurantCreateForm
 
 def restaurant_createview(request):
-    if request.method == 'POST':
+    form = RestaurantCreateForm(request.POST or None)
+    errors = None
+    # if request.method == 'POST':
 
         # title = request.POST.get("title")
         # location = request.POST.get("location")
         # category = request.POST.get("category")
-        form = RestaurantCreateForm(request.POST)
-        if form.is_valid():
-            obj = RestaurantLocation.objects.create(
-                name = form.cleaned_data.get('name'),
-                location = form.cleaned_data.get('location'),
-                category = form.cleaned_data.get('category'),
+        # form = RestaurantCreateForm(request.POST)
+    if form.is_valid():
+        obj = RestaurantLocation.objects.create(
+            name = form.cleaned_data.get('name'),
+            location = form.cleaned_data.get('location'),
+            category = form.cleaned_data.get('category'),
 
-            )
-            return HttpResponseRedirect("/restaurants/")
-        if forms.errors:
-            print(forms.errors)
+        )
+        return HttpResponseRedirect("/restaurants/")
+    if form.errors:
+        errors = form.errors
 
     template_name = 'picky_menu_picker/form.html'
     queryset = RestaurantLocation.objects.all()
     context = {
-        
+        "form" : form,
+        "errors" : errors,
     }
     return render(request, template_name, context)
 
