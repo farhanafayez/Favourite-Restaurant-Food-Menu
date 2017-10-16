@@ -30,12 +30,12 @@ class RestaurantListView(ListView):
         return queryset
 
 class RestaurantDetailView(DetailView):
-    queryset = RestaurantLocation.objects.all()
+    queryset = RestaurantLocation.objects.all() #filter(category__iexact= 'Arab')
     
-    def get_object(self, *args, **kwargs):
-        rest_id = self.kwargs.get('rest_id')
-        obj = get_object_or_404(RestaurantLocation, id=rest_id) # pk = rest_id
-        return obj
+    # def get_object(self, *args, **kwargs):
+    #     rest_id = self.kwargs.get('rest_id')
+    #     obj = get_object_or_404(RestaurantLocation, id=rest_id) # pk = rest_id
+    #     return obj
 
 
 
