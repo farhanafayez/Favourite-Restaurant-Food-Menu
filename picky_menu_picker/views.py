@@ -43,6 +43,14 @@ def restaurant_listview(request):
     }
     return render(request, template_name, context)
 
+def restaurant_detailview(request, slug):
+    template_name = 'restaurants/restaurantlocation_detail.html'
+    obj = RestaurantLocation.objects.get(slug=slug)
+    context = {
+        "object": obj
+    }
+    return render(request, template_name, context)
+
 
 class RestaurantListView(ListView):
 
@@ -67,6 +75,10 @@ class RestaurantDetailView(DetailView):
     #     return obj
 
 
+class RestaurantCreateView(CreateView):
+    form_class = RestaurantLocationCreateForm
+    template_name = 'restaurants/form.html'
+    success_url = "/restaurants/"
 
 
 
