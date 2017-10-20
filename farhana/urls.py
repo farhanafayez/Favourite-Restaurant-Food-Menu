@@ -13,26 +13,28 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
 # from picky_menu_picker.views import HomeView
 from django.views.generic import TemplateView
+from django.contrib.auth.views import LoginView
 from picky_menu_picker.views import (restaurant_listview, RestaurantListView, RestaurantDetailView,  RestaurantCreateView, restaurant_createview)
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', TemplateView.as_view(template_name='home.html')),
-    url(r'^restaurants/$', RestaurantListView.as_view()),
-    url(r'^restaurants/create/$', RestaurantCreateView.as_view()),
-    # url(r'^restaurants/(?P<slug>\w+)/$', RestaurantListView.as_view()),
-    url(r'^restaurants/(?P<slug>[\w-]+)/$', RestaurantDetailView.as_view()),
+    url(r'^login/$', LoginView.as_view(), name='login'),
+    url(r'^restaurants/', include('picky_menu_picker.urls', namespace = "restaurants")),
+    url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
+    # url(r'^restaurants/create/$', RestaurantCreateView.as_view(), name='restaurants-create'),
+    # url(r'^restaurants/$', RestaurantListView.as_view(), name='restaurants'),
+    # url(r'^restaurants/(?P<slug>[\w-]+)/$', RestaurantDetailView.as_view(), name='restaurant-detail'),
     # url(r'^restaurants/(?P<pk>\w+)/$', RestaurantDetailView.as_view()),
     # url(r'^restaurants/Arab/$', ArabRestaurantListView.as_view()),
     # url(r'^restaurants/Western/$', WesternRestaurantListView.as_view()),
     # url(r'^restaurants/Portuguese/$', PortugueseRestaurantListView.as_view()),
-    url(r'^about/$', TemplateView.as_view(template_name='about.html')),
-    url(r'^contact/$', TemplateView.as_view(template_name='contact.html')),
+    url(r'^about/$', TemplateView.as_view(template_name='about.html'), name='about'),
+    url(r'^contact/$', TemplateView.as_view(template_name='contact.html'), name='contact'),
     # url(r'^contact()', ContactTemplateView.as_view()),
 
 

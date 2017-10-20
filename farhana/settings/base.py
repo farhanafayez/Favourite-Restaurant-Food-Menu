@@ -51,6 +51,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'farhana.urls'
+LOGIN_URL = "/login/"
 
 TEMPLATES = [
     {

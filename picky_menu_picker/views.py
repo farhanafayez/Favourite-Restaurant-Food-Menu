@@ -1,3 +1,5 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
@@ -7,7 +9,7 @@ from django.views.generic import TemplateView, ListView, DetailView, CreateView
 from .forms import RestaurantCreateForm, RestaurantLocationCreateForm
 from .models import RestaurantLocation
 
-
+@login_required(login_url = "/login/")
 def restaurant_createview(request):
     form = RestaurantCreateForm(request.POST or None)
     errors = None
@@ -84,10 +86,11 @@ class RestaurantDetailView(DetailView):
     #     return obj
 
 
-class RestaurantCreateView(CreateView):
+class RestaurantCreateView(LoginRequiredMixin, CreateView):
     form_class = RestaurantLocationCreateForm
     template_name = 'picky_menu_picker/form.html'
     success_url = "/restaurants/"
+    login_url = "/login/" # this can be over ridden here in the views, as login url is defined in base settinsg
 
     def form_valid(self,form):
         instance = form.save(commit = False)
