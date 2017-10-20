@@ -89,6 +89,12 @@ class RestaurantCreateView(CreateView):
     template_name = 'picky_menu_picker/form.html'
     success_url = "/restaurants/"
 
+    def form_valid(self,form):
+        instance = form.save(commit = False)
+        instance.owner = self.request.user
+        instance.save() # removing this worl work as well, does it for default
+        return super(RestaurantCreateView, self).form_valid(form)
+
 
 
 
