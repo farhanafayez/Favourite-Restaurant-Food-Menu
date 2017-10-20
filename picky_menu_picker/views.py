@@ -1,11 +1,12 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
-from django.views import View 
-from django.views.generic import TemplateView, ListView, DetailView
-
-from .models import RestaurantLocation
 from django.db.models import Q
-from .forms import RestaurantCreateForm
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+from django.views import View
+from django.views.generic import TemplateView, ListView, DetailView, CreateView
+
+from .forms import RestaurantCreateForm, RestaurantLocationCreateForm
+from .models import RestaurantLocation
+
 
 def restaurant_createview(request):
     form = RestaurantCreateForm(request.POST or None)
@@ -17,13 +18,21 @@ def restaurant_createview(request):
         # category = request.POST.get("category")
         # form = RestaurantCreateForm(request.POST)
     if form.is_valid():
-        obj = RestaurantLocation.objects.create(
-            name = form.cleaned_data.get('name'),
-            location = form.cleaned_data.get('location'),
-            category = form.cleaned_data.get('category'),
+        if request.user.is_authenticated():
+            instance = form.save(commit = False)
+            instance.owner = request.user
+            instance.save()
 
-        )
-        return HttpResponseRedirect("/restaurants/")
+        # obj = RestaurantLocation.objects.create(
+        #     name = form.cleaned_data.get('name'),
+        #     location = form.cleaned_data.get('location'),
+        #     category = form.cleaned_data.get('category'),
+
+        # )
+            return HttpResponseRedirect("/restaurants/")
+        else:
+            return HttpResponseRedirect("/login/") #not best practice
+
     if form.errors:
         errors = form.errors
 
@@ -44,7 +53,7 @@ def restaurant_listview(request):
     return render(request, template_name, context)
 
 def restaurant_detailview(request, slug):
-    template_name = 'restaurants/restaurantlocation_detail.html'
+    template_name = 'picky_menu_picker/restaurantlocation_detail.html'
     obj = RestaurantLocation.objects.get(slug=slug)
     context = {
         "object": obj
@@ -77,7 +86,7 @@ class RestaurantDetailView(DetailView):
 
 class RestaurantCreateView(CreateView):
     form_class = RestaurantLocationCreateForm
-    template_name = 'restaurants/form.html'
+    template_name = 'picky_menu_picker/form.html'
     success_url = "/restaurants/"
 
 
