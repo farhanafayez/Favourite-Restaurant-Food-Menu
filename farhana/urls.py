@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^restaurants/', include('picky_menu_picker.urls', namespace = "restaurants")),
     url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
+    url(r'^items/', include('menus.urls', namespace='menus')),
     # url(r'^restaurants/create/$', RestaurantCreateView.as_view(), name='restaurants-create'),
     # url(r'^restaurants/$', RestaurantListView.as_view(), name='restaurants'),
     # url(r'^restaurants/(?P<slug>[\w-]+)/$', RestaurantDetailView.as_view(), name='restaurant-detail'),
