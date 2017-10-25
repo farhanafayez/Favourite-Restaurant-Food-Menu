@@ -4,63 +4,63 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.views import View
-from django.views.generic import TemplateView, ListView, DetailView, CreateView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView
 
 from .forms import RestaurantCreateForm, RestaurantLocationCreateForm
 from .models import RestaurantLocation
 
-@login_required(login_url = "/login/")
-def restaurant_createview(request):
-    form = RestaurantCreateForm(request.POST or None)
-    errors = None
-    # if request.method == 'POST':
+# @login_required(login_url = "/login/")
+# def restaurant_createview(request):
+#     form = RestaurantCreateForm(request.POST or None)
+#     errors = None
+#     # if request.method == 'POST':
 
-        # title = request.POST.get("title")
-        # location = request.POST.get("location")
-        # category = request.POST.get("category")
-        # form = RestaurantCreateForm(request.POST)
-    if form.is_valid():
-        if request.user.is_authenticated():
-            instance = form.save(commit = False)
-            instance.owner = request.user
-            instance.save()
+#         # title = request.POST.get("title")
+#         # location = request.POST.get("location")
+#         # category = request.POST.get("category")
+#         # form = RestaurantCreateForm(request.POST)
+#     if form.is_valid():
+#         if request.user.is_authenticated():
+#             instance = form.save(commit = False)
+#             instance.owner = request.user
+#             instance.save()
 
-        # obj = RestaurantLocation.objects.create(
-        #     name = form.cleaned_data.get('name'),
-        #     location = form.cleaned_data.get('location'),
-        #     category = form.cleaned_data.get('category'),
+#         # obj = RestaurantLocation.objects.create(
+#         #     name = form.cleaned_data.get('name'),
+#         #     location = form.cleaned_data.get('location'),
+#         #     category = form.cleaned_data.get('category'),
 
-        # )
-            return HttpResponseRedirect("/restaurants/")
-        else:
-            return HttpResponseRedirect("/login/") #not best practice
+#         # )
+#             return HttpResponseRedirect("/restaurants/")
+#         else:
+#             return HttpResponseRedirect("/login/") #not best practice
 
-    if form.errors:
-        errors = form.errors
+#     if form.errors:
+#         errors = form.errors
 
-    template_name = 'picky_menu_picker/form.html'
-    queryset = RestaurantLocation.objects.all()
-    context = {
-        "form" : form,
-        "errors" : errors,
-    }
-    return render(request, template_name, context)
+#     template_name = 'picky_menu_picker/form.html'
+#     queryset = RestaurantLocation.objects.all()
+#     context = {
+#         "form" : form,
+#         "errors" : errors,
+#     }
+#     return render(request, template_name, context)
 
-def restaurant_listview(request):
-    template_name = 'picky_menu_picker/restaurants_list.html'
-    queryset = RestaurantLocation.objects.all()
-    context = {
-        "object_list": queryset
-    }
-    return render(request, template_name, context)
+# def restaurant_listview(request):
+#     template_name = 'picky_menu_picker/restaurants_list.html'
+#     queryset = RestaurantLocation.objects.all()
+#     context = {
+#         "object_list": queryset
+#     }
+#     return render(request, template_name, context)
 
-def restaurant_detailview(request, slug):
-    template_name = 'picky_menu_picker/restaurantlocation_detail.html'
-    obj = RestaurantLocation.objects.get(slug=slug)
-    context = {
-        "object": obj
-    }
-    return render(request, template_name, context)
+# def restaurant_detailview(request, slug):
+#     template_name = 'picky_menu_picker/restaurantlocation_detail.html'
+#     obj = RestaurantLocation.objects.get(slug=slug)
+#     context = {
+#         "object": obj
+#     }
+#     return render(request, template_name, context)
 
 
 class RestaurantListView(ListView):
@@ -77,8 +77,8 @@ class RestaurantListView(ListView):
 
         return queryset
 
-class RestaurantDetailView(DetailView):
-    queryset = RestaurantLocation.objects.all() #filter(category__iexact= 'Arab')
+class RestaurantDetailView(LoginRequiredMixin, DetailView):
+    queryset = RestaurantLocation.objects.all(owner=self.request.user) #filter(category__iexact= 'Arab')
     
     # def get_object(self, *args, **kwargs):
     #     rest_id = self.kwargs.get('rest_id')

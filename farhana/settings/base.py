@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'picky_menu_picker',
     'menus',
+    'profiles',
 ]
 
 MIDDLEWARE = [

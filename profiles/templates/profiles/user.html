@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block head_title %}{{ user.username }} | {{ block.super}}{% endblock head_title %}
+
+{% block content %}
+<h1>{{ user.username }}</h1>
+<hr/>
+
+{% for rest in user.restaurantlocation_set.all %}
+    <li>{{ rest.title }} | {{ rest.category }} | {{ rest.location }}
+        <ul>
+            {% for item in rest.item_set.all %}
+                <li>{{ item.name }}<br/>
+
+                    {% for ing in item.get_contents %}
+                    {{ ing }}
+
+                    {% endfor %}
+
+                </li>
+            {% endfor %}
+
+        </ul>    
+
+    </li>
+
+{% endfor %}
+
+
+{% endblock %}
