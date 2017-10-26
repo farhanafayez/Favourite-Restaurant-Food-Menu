@@ -1,7 +1,6 @@
 
 from django import forms
-
-from picky_menu_picker import RestauarantLocation
+from picky_menu_picker.models import RestaurantLocation
 from .models import Item
 
 class ItemForm(forms.ModelForm):

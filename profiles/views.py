@@ -58,7 +58,7 @@ class ProfileDetailView(DetailView):
             raise Http404
         return get_object_or_404(User, username_iexact=username, is_active=True)
 
-    def get context_data(self):
+    def get_context_data(self):
         context = super(ProfileDetailView, self).get_context_data(*args, **kwargs)
         user = context['user']
         query = self.request.GET.get('q')
@@ -69,6 +69,6 @@ class ProfileDetailView(DetailView):
             qs = qs.filter(name__icontains=query)
         else:
             qs = RestaurantLocation.objects.filter(owner=user)
-        if item:exists and qs.exists():
+        if Item_exists and qs.exists():
             context['locations'] = qs
         return context

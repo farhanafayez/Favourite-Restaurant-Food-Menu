@@ -17,9 +17,11 @@ from django.conf.urls import url, include
 from django.contrib import admin
 # from picky_menu_picker.views import HomeView
 from django.views.generic import TemplateView
-from django.contrib.auth.views import LoginView
-from picky_menu_picker.views import (restaurant_listview, RestaurantListView, RestaurantDetailView,  RestaurantCreateView, restaurant_createview)
+from django.contrib.auth.views import LoginView, LogoutView
+from picky_menu_picker.views import (RestaurantListView, RestaurantDetailView,  RestaurantCreateView)
 
+from menus.views import HomeView
+from profiles.views import ProfileFollowToggle, RegisterView, activate_user_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),

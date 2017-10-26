@@ -66,19 +66,12 @@ from .models import RestaurantLocation
 class RestaurantListView(ListView):
 
     def get_queryset(self):
-        slug = self.kwargs.get("slug")
-        if slug:
-            queryset = RestaurantLocation.objects.filter(
-                    Q(category__iexact=slug) |
-                    Q(category__icontains=slug) 
-                )
-        else:
-            queryset = RestaurantLocation.objects.all()
-
-        return queryset
+        return RestaurantLocation.objects.filter(owner=self.request.user)
 
 class RestaurantDetailView(LoginRequiredMixin, DetailView):
-    queryset = RestaurantLocation.objects.all(owner=self.request.user) #filter(category__iexact= 'Arab')
+    def get_queryset(self):
+        return RestaurantLocation.objects.filter(owner=self.request.user)
+    # queryset = RestaurantLocation.objects.all(owner=self.request.user) #filter(category__iexact= 'Arab')
     
     # def get_object(self, *args, **kwargs):
     #     rest_id = self.kwargs.get('rest_id')
@@ -88,16 +81,14 @@ class RestaurantDetailView(LoginRequiredMixin, DetailView):
 
 class RestaurantCreateView(LoginRequiredMixin, CreateView):
     form_class = RestaurantLocationCreateForm
-    template_name = 'picky_menu_picker/form.html'
-    success_url = "/restaurants/"
-    login_url = "/login/" # this can be over ridden here in the views, as login url is defined in base settinsg
+    login_url = '/login/'
+    template_name = 'form.html'
+    #success_url = "/restaurants/"
 
-    def form_valid(self,form):
-        instance = form.save(commit = False)
+    def form_valid(self, form):
+        instance = form.save(commit=False)
         instance.owner = self.request.user
-        instance.save() # removing this worl work as well, does it for default
         return super(RestaurantCreateView, self).form_valid(form)
-
 
     def get_context_data(self, *args, **kwargs):
         context = super(RestaurantCreateView, self).get_context_data(*args, **kwargs)
@@ -105,11 +96,20 @@ class RestaurantCreateView(LoginRequiredMixin, CreateView):
         return context
 
 
+class RestaurantUpdateView(LoginRequiredMixin, UpdateView):
+    form_class = RestaurantLocationCreateForm
+    login_url = '/login/'
+    template_name = 'restaurants/detail_update.html'
+    #success_url = "/restaurants/"
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(RestaurantUpdateView, self).get_context_data(*args, **kwargs)
+        name = self.get_object().name
+        context['title'] = f'Update Restaurant: {name}'
+        return context
 
-
-
-
+    def get_queryset(self):
+        return RestaurantLocation.objects.filter(owner=self.request.user)
 
 
 
