@@ -4,9 +4,14 @@
 
 {% block content %}
 <h1>{{ user.username }}</h1>
+<form class = 'form' method = 'GET' action='.'>
+    <input type='text' placeholder="Search..." name = 'q' value='{{ request.GET.q }} '>
+    <button class = 'btn btn-default' type="submit">Search<button>
+</form>
 <hr/>
-
-{% for rest in user.restaurantlocation_set.all %}
+{% if user.item_set.all.exists %}
+{% if locations %}
+{% for rest in locations %}
     <li>{{ rest.title }} | {{ rest.category }} | {{ rest.location }}
         <ul>
             {% for item in rest.item_set.all %}
@@ -23,7 +28,8 @@
         </ul>    
 
     </li>
-
+{% endif %}
+{% endif %}
 {% endfor %}
 
 
